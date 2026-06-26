@@ -1,0 +1,15 @@
+# Ignore large data directories
+original_data/
+derivatives/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE settings
+.vscode/
