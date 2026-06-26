@@ -65,13 +65,30 @@ Because EEG data is non-normally distributed and this is a single-subject datase
 
 ---
 
-## Results Summary
-The data **fully supports the Direction Asymmetry hypothesis**.
-1. **Increase (64→128)**: Elicits a massive positive prediction error response (huge P300), driving the difference wave strongly positive.
-2. **Decrease (128→64)**: Elicits a smaller, relatively negative prediction error response, causing the difference wave to drop negatively (significant at N40).
-The brain does not process all "surprises" equally; the response is heavily modulated by the physical direction of the intensity change.
+## Results & Key Images to Review
+The data **fully supports the Direction Asymmetry hypothesis**: the brain does not process all "surprises" equally; the response is heavily modulated by the physical direction of the intensity change.
 
-## Running the Pipeline
+To see the proof, look at these exact images (generated in `derivatives/figures/` after running the scripts):
+1. **`stats_bar_amplitudes.png`**: The best summary image. It shows that for an Increase (64→128), the Deviant is always much *more positive* than the Standard. For a Decrease (128→64), the Deviant is always *more negative* (or closer to zero) than the Standard. 
+2. **`stats_diff_ci_increase.png`**: Shows the massive positive prediction error (P300) when the shock is unexpectedly strong. The blue shaded area is the 95% Confidence Interval.
+3. **`stats_diff_ci_decrease.png`**: Shows the early negative prediction error (N40) when the shock is unexpectedly weak.
+
+---
+
+## Data Directory Setup (For Group Members)
+Because the raw EEG data files are very large (gigabytes), they are **not** included in this GitHub repository. Before running the scripts, you must manually create the data folders and place the raw `.bdf` file inside.
+
+Your project folder must look exactly like this:
+```
+EEG_PRACTICAL/
+├── original_data/            <-- YOU MUST CREATE THIS FOLDER
+│   └── 01EEG/                <-- YOU MUST CREATE THIS FOLDER
+│       └── ID01_...bdf       <-- PLACE THE RAW BDF FILE HERE
+├── scripts/                  (From GitHub)
+├── README.md                 (From GitHub)
+└── environment.yml           (From GitHub)
+```
+The scripts will automatically create the `derivatives/` folder and output all figures there.
 ## Environment Setup (For Group Members)
 If you are downloading this code for the first time, you need to create the exact same Python environment to run the scripts. 
 
