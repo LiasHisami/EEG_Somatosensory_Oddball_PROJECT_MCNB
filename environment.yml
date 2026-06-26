@@ -1,0 +1,11 @@
+name: eeg_mne
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.9
+  - mne
+  - numpy
+  - scipy
+  - matplotlib
+  - pandas

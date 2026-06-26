@@ -72,7 +72,17 @@ The data **fully supports the Direction Asymmetry hypothesis**.
 The brain does not process all "surprises" equally; the response is heavily modulated by the physical direction of the intensity change.
 
 ## Running the Pipeline
-Requires the `eeg_mne` conda environment:
+## Environment Setup (For Group Members)
+If you are downloading this code for the first time, you need to create the exact same Python environment to run the scripts. 
+
+Assuming you have Anaconda or Miniconda installed, run this command in your terminal inside the project folder:
+```bash
+conda env create -f environment.yml
+```
+This will automatically download and install `mne`, `numpy`, `scipy`, `matplotlib`, and `pandas` into a new environment called `eeg_mne`.
+
+## Running the Pipeline
+Once the environment is created, activate it and run the scripts in order:
 ```bash
 conda activate eeg_mne
 python scripts/03_preprocessing.py
