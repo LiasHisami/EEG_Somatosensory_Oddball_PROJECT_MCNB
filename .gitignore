@@ -13,3 +13,7 @@ Thumbs.db
 
 # Ignore IDE settings
 .vscode/
+
+# Ignore custom scripts and LaTeX files
+get_counts.py
+EEG_Pipeline_Documentation*

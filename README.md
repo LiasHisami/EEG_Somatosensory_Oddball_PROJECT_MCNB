@@ -8,15 +8,8 @@ There were 12 blocks of 6min, with short breaks in between.
 In a roving paradigm, one stimulus intensity repeats several times, allowing the brain to establish an expectation (standard). The intensity then switches, producing an unexpected (deviant) stimulus.
 
 ## Hypothesis
-**The Effects of Stimulus Intensity Depend on Both the Direction of Change and ERP Component.**
-Prediction error responses may differ depending on whether stimulus intensity increases or decreases. 
-Furthermore, stimulus intensity is expected to influence early sensory processing components more strongly than later cognitive components.
-
-Expected findings:
-- N40 amplitudes will differ between intensity-increase deviants (64 → 128) and intensity-decrease deviants (128 → 64).
-- The deviant–standard difference wave may be larger for one transition direction than the other, indicating asymmetric prediction error processing.
-- P50 amplitudes will be modulated by stimulus intensity, reflecting differences in early sensory processing.
-- In contrast, P300 amplitudes will show little or no modulation by stimulus intensity.
+**Do somatosensory responses to unexpected intensity changes differ between low-to-high and high-to-low transitions?**
+We hypothesize that early components (N40, P50) may be strongly influenced by physical stimulus intensity, whereas later responses (P300) may show direction-dependent effects after accounting for physical intensity.
 
 ## Data
 - **Participant**: ID01
@@ -57,21 +50,24 @@ Computes Evoked responses (averages) and creates visual plots. Focuses on the **
 - **Key Output 2:** `derivatives/figures/erp_diff_by_direction_contra.png` — Plots the (Deviant - Standard) difference wave. Visually confirms the asymmetry hypothesis (the blue and orange lines go in opposite directions).
 - **Key Output 3:** `derivatives/figures/topo_diff_overall.png` — Shows the brain-wide distribution of the mismatch response.
 
-### 3. Statistics (`05_statistics.py`)
-Because EEG data is non-normally distributed and this is a single-subject dataset, we used non-parametric **Permutation t-tests** across single epochs (10,000 permutations) rather than standard parametric tests. 
-- **Key Output 1:** `derivatives/figures/stats_bar_amplitudes.png` — A bar chart showing the mean amplitude of each component (N40, P50, P300) with error bars.
-- **Key Output 2:** `derivatives/figures/stats_diff_ci_increase.png` & `stats_diff_ci_decrease.png` — Difference waves plotted with 95% Bootstrap Confidence Intervals. Anywhere the shaded band doesn't cross zero is statistically significant.
-- **Key Output 3:** `derivatives/stats/permutation_test_results.csv` — Contains the raw p-values and Cohen's d effect sizes.
+### 3. Progressive Statistical Analysis (`05_statistics.py` & `06_regression_analysis.py`)
+Because EEG data is non-normally distributed and this is a single-subject dataset, we began our analysis with non-parametric **Permutation t-tests** across single epochs (10,000 permutations). 
+- **`05_statistics.py`:** Generates difference waves, bootstrap confidence intervals, and runs permutation tests comparing deviants vs standards. It initially compared increase-deviants directly against decrease-deviants to test for direction asymmetry.
+- **The Confound:** We identified that comparing an increase deviant (physically a 128µA stimulus) directly to a decrease deviant (physically a 64µA stimulus) confounds *prediction error* with *physical intensity*.
+- **`06_regression_analysis.py`:** To solve this, we implemented a **Simple Linear Regression** (`Amplitude ~ Deviance * Intensity`) on the single-epoch amplitudes for each time window. The interaction term (`Deviance:Intensity`) tests for pure direction asymmetry while controlling for the physical intensity of the stimuli. We also ran ROI sensitivity checks across different electrode clusters.
 
 ---
 
-## Results & Key Images to Review
-The data **fully supports the Direction Asymmetry hypothesis**: the brain does not process all "surprises" equally; the response is heavily modulated by the physical direction of the intensity change.
+## Results & Key Findings
+This single-subject analysis provides preliminary evidence for direction-dependent somatosensory responses:
 
-To see the proof, look at these exact images (generated in `derivatives/figures/` after running the scripts):
-1. **`stats_bar_amplitudes.png`**: The best summary image. It shows that for an Increase (64→128), the Deviant is always much *more positive* than the Standard. For a Decrease (128→64), the Deviant is always *more negative* (or closer to zero) than the Standard. 
-2. **`stats_diff_ci_increase.png`**: Shows the massive positive prediction error (P300) when the shock is unexpectedly strong. The blue shaded area is the 95% Confidence Interval.
-3. **`stats_diff_ci_decrease.png`**: Shows the early negative prediction error (N40) when the shock is unexpectedly weak.
+1. **Early Components (N40, P50):** Initial permutation tests suggested direction differences across multiple time windows. However, the regression analysis indicated that the N40 and P50 interaction effects were no longer statistically reliable after accounting for physical intensity ($p > 0.11$). This suggests the apparent early direction differences may largely reflect physical intensity differences.
+2. **Late Cognitive Component (P300):** The strongest evidence for a direction-dependent effect was observed in the P300 window. The regression model showed a significant interaction effect ($p = 0.0076$), consistent with a later direction-dependent mismatch response. However, these findings should be interpreted cautiously given the single-subject design, single-epoch statistics, and multiple-comparisons burden.
+
+### Key Outputs to Review:
+- **`derivatives/stats/regression_results.csv`**: Shows the interaction p-values that disentangle intensity from prediction error.
+- **`stats_bar_amplitudes.png`**: Visually demonstrates the large P300 for the Increase condition.
+- **`stats_diff_ci_Increase_64-128.png`** & **`stats_diff_ci_Decrease_128-64.png`**: Difference waves showing the mismatch responses.
 
 ---
 
@@ -105,4 +101,5 @@ conda activate eeg_mne
 python scripts/03_preprocessing.py
 python scripts/04_erp_analysis.py
 python scripts/05_statistics.py
+python scripts/06_regression_analysis.py
 ```

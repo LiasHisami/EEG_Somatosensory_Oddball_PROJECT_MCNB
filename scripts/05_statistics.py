@@ -43,8 +43,8 @@ CONTRA_CHANNELS = ["C4", "CP4", "FC4"]
 
 # Time windows (seconds)
 COMPONENTS = {
-    "N40":  (0.030, 0.050),
-    "P50":  (0.040, 0.070),
+    "N40":  (0.030, 0.045),
+    "P50":  (0.050, 0.070),
     "P300": (0.250, 0.400),
 }
 
@@ -363,7 +363,7 @@ for direction_label, std_cond, dev_cond in comparisons:
     ax.legend(fontsize=9)
     fig.tight_layout()
 
-    safe_label = direction_label.replace(" ", "_").replace("→", "-")
+    safe_label = direction_label.replace(" ", "_").replace("→", "-").replace("(", "").replace(")", "")
     fig.savefig(figures_dir / f"stats_diff_ci_{safe_label}.png", dpi=150)
     plt.close(fig)
 
